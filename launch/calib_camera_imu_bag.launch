@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- <arg name="path" default="/home/ros/workspace/data/calib_camera_imu/calib2/GOPR9960.MP4" doc="path to the video file"/> -->
+    <arg name="path" default="/home/ros/workspace/data/calib_camera_imu/calib3/GOPR9964.MP4" doc="path to the video file"/>
+    <!-- <arg name="path" default="/home/ros/workspace/samples/imu/GP019954.MP4" doc="path to the video file"/> -->
+    
+    <arg name="record" default="true" />
+
+    <node name="gopro" pkg="gopro" type="play" respawn="false" output="screen">
+        <param name="path" value="$(arg path)" />
+        <param name="only_imu" value="false" />
+    </node>
+
+    <node pkg="rosbag" type="record" name="rosbag_record_cam" args="record -o /home/ros/workspace/data/calib_camera_imu/calib3/bag /gopro/imu /gopro/image" if="$(arg record)" />
+</launch>

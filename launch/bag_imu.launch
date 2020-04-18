@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- <arg name="video" default="/home/ros/workspace/samples/GP032489.MP4" doc="path to the video file"/> -->
+    <!-- <arg name="path" default="/home/ros/workspace/samples/GOPR9948.MP4" doc="path to the video file"/> -->
+    <!-- <arg name="path" default="/home/ros/workspace/samples/imu/GP019954.MP4" doc="path to the video file"/> -->
+    <!-- <arg name="path" default="" doc="path to the video file"/> -->
+    <arg name="path_list" default="[]" doc="path to the video file"/>
+    <!-- <arg name="path_list" default="[/home/ros/workspace/data/imu/GP019954.MP4, /home/ros/workspace/data/imu/GP029954.MP4, /home/ros/workspace/data/imu/GP039954.MP4, /home/ros/workspace/data/imu/GP049954.MP4, /home/ros/workspace/data/imu/GP059954.MP4, /home/ros/workspace/data/imu/GP069954.MP4]" doc="path to the video file"/> -->
+
+    <arg name="path" default="/home/ros/workspace/data/tests/haut_bas.MP4" doc="path to the video file"/>
+    <arg name="record" default="false" />
+
+    <node name="gopro" pkg="gopro" type="play" respawn="false" output="screen">
+        <param name="path" value="$(arg path)" />
+        <param name="path_list" type="yaml" value="$(arg path_list)" />
+        <param name="only_imu" value="false" />
+        <param name="loop" value="true" />
+    </node>
+
+    <!-- <node pkg="rosbag" type="record" name="rosbag_record_cam" args="record -o /home/ros/workspace/samples/imu/bag /gopro/imu" if="$(arg record)" /> -->
+</launch>
