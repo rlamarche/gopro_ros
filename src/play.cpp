@@ -6,6 +6,8 @@
 #include "sensor_msgs/Image.h"
 #include "sensor_msgs/image_encodings.h"
 
+#include "utils/gpmf-parser/demo/GPMF_mp4reader.h"
+
 int main(int argc, char **argv)
 {
     av_register_all();
@@ -54,6 +56,39 @@ int main(int argc, char **argv)
     }
 
     int media_index = 0;
+
+
+
+
+
+    // Extract imu timings
+    size_t mp4 = OpenMP4Source(path_list[media_index].c_str(), MOV_GPMF_TRAK_TYPE, MOV_GPMF_TRAK_SUBTYPE);
+
+    double accl_start, accl_end;
+    // uint32_t fourcc = GPMF_Key(ms);
+    double accl_rate = GetGPMFSampleRate(mp4, STR2FOURCC("ACCL"), GPMF_SAMPLE_RATE_PRECISE, &accl_start, &accl_end); // GPMF_SAMPLE_RATE_FAST);
+
+    // start -= start_offset;
+    // end -= start_offset;
+    printf("%c%c%c%c sampling rate = %fHz (time %f to %f)\",\n", PRINTF_4CC(STR2FOURCC("ACCL")), accl_rate, accl_start, accl_end);
+
+    double gyro_start, gyro_end;
+    double gyro_rate = GetGPMFSampleRate(mp4, STR2FOURCC("GYRO"), GPMF_SAMPLE_RATE_PRECISE, &gyro_start, &gyro_end); // GPMF_SAMPLE_RATE_FAST);
+
+    // start -= start_offset;
+    // end -= start_offset;
+    printf("%c%c%c%c sampling rate = %fHz (time %f to %f)\",\n", PRINTF_4CC(STR2FOURCC("GYRO")), gyro_rate, gyro_start, gyro_end);
+
+    CloseSource(mp4);
+
+
+
+
+
+
+
+
+
     Media media(path_list[media_index]);
     media.set_frame_width(frame_width);
     media.set_frame_height(frame_height);
@@ -61,12 +96,13 @@ int main(int argc, char **argv)
 
     enum Media::PacketType packet_type = media.next_packet();
     double start_pts = 0.0;
-    double relative_pts = 0.0;
-    double duration = 0.0;
 
     std::vector<std::pair<double, sensor_msgs::Imu>> imu_data;
 
     ROS_INFO("Now reading IMU");
+
+    int accl_total = 0;
+    int gyro_total = 0;
     while (ros::ok())
     {
         // Skip to next IMU packet or end
@@ -77,21 +113,25 @@ int main(int argc, char **argv)
 
         if (media.get_packet_type() == Media::PacketType::IMU)
         {
-            relative_pts = media.get_pts();
-            duration = media.get_duration();
-            ROS_INFO("imu ts = %f", start_pts + relative_pts);
+            // ROS_INFO("imu ts = %f", start_pts + relative_pts);
 
             std::vector<Eigen::Vector3f> accl_data;
             std::vector<Eigen::Vector3f> gyro_data;
             media.read_imu(accl_data, gyro_data);
             // ROS_INFO("pts = %f duration = %f", start_pts + relative_pts, duration);
 
-            for (int gyro_idx = 0; gyro_idx < gyro_data.size(); gyro_idx++)
+            for (int accl_idx = 0; accl_idx < accl_data.size(); accl_idx++)
             {
-                int accl_idx = gyro_idx * accl_data.size() / gyro_data.size();
+                int gyro_idx = accl_idx * gyro_data.size() / accl_data.size();
 
-                double delta_ts = ((double)gyro_idx) * duration / (double)gyro_data.size();
-                double imu_ts = start_pts + relative_pts + delta_ts;
+                double imu_ts = start_pts + (accl_total + accl_idx) / accl_rate + accl_start;
+                // ROS_INFO("imu ts = %f", imu_ts);
+                if (imu_ts < 0.0) {
+                    continue;
+                }
+
+                // double delta_ts = ((double)gyro_idx) * duration / (double)gyro_data.size();
+                // double imu_ts = start_pts + relative_pts + delta_ts;
 
                 // ROS_INFO("imu ts partial = %f", imu_ts);
 
@@ -128,13 +168,38 @@ int main(int argc, char **argv)
                     imu_data.push_back(std::make_pair(imu_ts, imu));
                 }
             }
+            accl_total += accl_data.size();
+            gyro_total += gyro_data.size();
         }
         else if (packet_type == Media::PacketType::END)
         {
             media_index++;
             if (media_index < path_list.size())
             {
-                start_pts = start_pts + relative_pts + duration;
+                start_pts = start_pts + gyro_end;
+                accl_total = 0;
+                gyro_total = 0;
+
+                // Extract imu timings
+                mp4 = OpenMP4Source(path_list[media_index].c_str(), MOV_GPMF_TRAK_TYPE, MOV_GPMF_TRAK_SUBTYPE);
+
+                accl_start, accl_end;
+                // uint32_t fourcc = GPMF_Key(ms);
+                accl_rate = GetGPMFSampleRate(mp4, STR2FOURCC("ACCL"), GPMF_SAMPLE_RATE_PRECISE, &accl_start, &accl_end); // GPMF_SAMPLE_RATE_FAST);
+
+                // start -= start_offset;
+                // end -= start_offset;
+                printf("%c%c%c%c sampling rate = %fHz (time %f to %f)\",\n", PRINTF_4CC(STR2FOURCC("ACCL")), accl_rate, accl_start, accl_end);
+
+                gyro_start, gyro_end;
+                gyro_rate = GetGPMFSampleRate(mp4, STR2FOURCC("GYRO"), GPMF_SAMPLE_RATE_PRECISE, &gyro_start, &gyro_end); // GPMF_SAMPLE_RATE_FAST);
+
+                // start -= start_offset;
+                // end -= start_offset;
+                printf("%c%c%c%c sampling rate = %fHz (time %f to %f)\",\n", PRINTF_4CC(STR2FOURCC("GYRO")), gyro_rate, gyro_start, gyro_end);
+                
+                CloseSource(mp4);
+
                 media = Media(path_list[media_index]);
                 media.set_frame_width(frame_width);
                 media.set_frame_height(frame_height);
@@ -164,8 +229,8 @@ int main(int argc, char **argv)
     media.open();
     packet_type = media.next_packet();
     start_pts = 0.0;
-    relative_pts = 0.0;
-    duration = 0.0;
+    double relative_pts = 0.0;
+    double duration = 0.0;
 
     std::size_t imu_idx = 0;
 

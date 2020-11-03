@@ -3,15 +3,17 @@
     <!-- <arg name="video" default="/home/ros/workspace/samples/GP032489.MP4" doc="path to the video file"/> -->
     <!-- <arg name="path" default="/home/ros/workspace/samples/GOPR9948.MP4" doc="path to the video file"/> -->
     <!-- <arg name="path" default="/home/ros/workspace/samples/imu/GP019954.MP4" doc="path to the video file"/> -->
-    <arg name="path" default="" doc="path to the video file"/>
-    <!-- <arg name="path" default="/home/ros/workspace/samples/imu/GP019954.MP4" doc="path to the video file"/> -->
+    <!-- <arg name="path" default="" doc="path to the video file"/> -->
+    <arg name="path" default="/home/ros/workspace/data/videos/GOPR9972.MP4" doc="path to the video file"/>
+    <!-- <arg name="path" default="/home/ros/workspace/data/videos/GOPR9948.MP4" doc="path to the video file"/> -->
+    <!-- <arg name="path" default="/home/ros/workspace/data/tests/GOPR9971.MP4" doc="path to the video file"/> -->
     
-    <!-- <arg name="path_list" default="[]" doc="path to the video file"/> -->
+    <arg name="path_list" default="[]" doc="path to the video file"/>
     <!-- <arg name="path_list" default="[/home/ros/workspace/samples/imu/GP019954.MP4, /home/ros/workspace/samples/imu/GP029954.MP4, /home/ros/workspace/samples/imu/GP039954.MP4, /home/ros/workspace/samples/imu/GP049954.MP4, /home/ros/workspace/samples/imu/GP059954.MP4, /home/ros/workspace/samples/imu/GP069954.MP4]" doc="path to the video file"/> -->
     <!-- <arg name="path_list" default="[/home/ros/workspace/samples/imu/GP019954.MP4, /home/ros/workspace/samples/imu/GP029954.MP4]" doc="path to the video file"/> -->
     <!-- <arg name="path_list" default="[/home/ros/workspace/data/videos/GP032489.MP4]" doc="path to the video file"/> -->
     <!-- <arg name="path_list" default="[/home/ros/workspace/data/videos/GP032489.MP4]" doc="path to the video file"/> -->
-    <arg name="path_list" default="[/home/ros/workspace/data/tests/GOPR9971.MP4]" doc="path to the video file"/>
+    <!-- <arg name="path_list" default="[/home/ros/workspace/data/tests/GOPR9971.MP4]" doc="path to the video file"/> -->
     <!-- <arg name="path_list" default="[/home/ros/workspace/data/calib_camera_imu/calib3/GOPR9964.MP4]" doc="path to the video file"/> -->
 
     <arg name="record" default="true" />
@@ -55,24 +57,24 @@
         <param name="up_slam_chi2_multipler"       type="double"   value="1" />
         <param name="up_aruco_sigma_px"            type="double"   value="1" />
         <param name="up_aruco_chi2_multipler"      type="double"   value="1" /> -->
-        <param name="gyroscope_noise_density"      type="double"   value="0.05866781259678083" />
-        <param name="gyroscope_random_walk"        type="double"   value="0.0007392111263738943" />
-        <param name="accelerometer_noise_density"  type="double"   value="0.4190399391879815" />
-        <param name="accelerometer_random_walk"    type="double"   value="0.014524236274655954" />
+        <param name="gyroscope_noise_density"      type="double"   value="0.058776443427577374" />
+        <param name="gyroscope_random_walk"        type="double"   value="0.0007774750269154479" />
+        <param name="accelerometer_noise_density"  type="double"   value="0.41375000532270617" />
+        <param name="accelerometer_random_walk"    type="double"   value="0.014930566816697289" />
 
 
         <!-- camera intrinsics -->
-        <rosparam param="cam0_wh">[3840, 2160]</rosparam>
-        <param name="cam0_is_fisheye" type="bool" value="true" />
-        <rosparam param="cam0_k">[1749.9480332755154, 1751.5727168928368, 1941.4650368421906, 1069.2098989680383]</rosparam>
-        <rosparam param="cam0_d">[0.0564660096568687, 0.002163598884257146, 0.0063034961320367665, -0.005332383042355651]</rosparam>
+        <rosparam param="cam0_wh">[768, 432]</rosparam>
+        <param name="cam0_is_fisheye" type="bool" value="false" />
+        <rosparam param="cam0_k">[348.9695929422838, 349.2380906070166, 383.6453227591606, 213.18082338615204]</rosparam>
+        <rosparam param="cam0_d">[-0.23561219347338547, 0.05414851043137838, 0.0004013535584602063, 0.000807494092287664]</rosparam>
 
         <!-- camera extrinsics -->
         <rosparam param="T_C0toI">
             [
-            0.2303080051307616, 0.9669547581390758, 0.10934678086204813, -0.042716098528598694,
-            0.003868652309690357, 0.11145678324774944, -0.993761751627307, 0.19643645420750894,
-            -0.9731100946460263, 0.2292943112688754, 0.02192857764964007, -0.003607701005403121,
+            0.2230956121931188, 0.9648434774575004, 0.13894391612408974, -0.00481458710364857,
+            0.01988280411467147, 0.13800267639178793, -0.9902322633651379, 0.02126056693010259,
+            -0.9745937727693101, 0.2236790676760434, 0.0116039977103089, 0.0021348870220462396,
             0.0, 0.0, 0.0, 1.0
             ]
         </rosparam>

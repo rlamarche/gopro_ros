@@ -23,10 +23,12 @@
     <node name="gopro" pkg="gopro" type="play" respawn="false" output="screen">
         <!-- <param name="path" value="/home/ros/workspace/data/tests/GOPR9971.MP4" /> -->
         <!-- <param name="path" value="/home/ros/workspace/data/videos/GOPR9972.MP4" /> -->
-        <!-- <param name="path" value="/home/ros/workspace/data/videos/GOPR9975.MP4" /> -->
-        <param name="path" value="/home/ros/workspace/data/calib_camera_imu/calib3/GOPR9964.MP4" />
+        <!-- <param name="path" value="/home/ros/workspace/data/gopro5/GOPR9976.MP4" /> -->
+        <param name="path" value="/home/ros/workspace/data/videos/GOPR9975.MP4" />
+        <!-- <param name="path" value="/home/ros/workspace/data/calib_camera_imu/calib3/GOPR9964.MP4" /> -->
         <!-- <param name="path" value="/home/ros/workspace/data/calib_camera_imu/calib2/GOPR9960.MP4" /> -->
         <!-- <param name="path" value="/home/ros/workspace/data/calib_camera/GOPR9953.MP4" /> -->
+        <!-- <param name="path" value="/home/ros/workspace/data/calib_camera_imu/GOPR9955.MP4" /> -->
     </node>
 
     <node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find vins_estimator)/../config/vins_rviz_config.rviz" />

@@ -20,7 +20,7 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 catkin_package()
 
-add_executable(play src/play.cpp src/utils/media.cpp src/utils/media_ffmpeg.cpp src/utils/gpmf-parser/GPMF_parser.c)
+add_executable(play src/play.cpp src/utils/media.cpp src/utils/media_ffmpeg.cpp src/utils/gpmf-parser/GPMF_parser.c src/utils/gpmf-parser/demo/GPMF_mp4reader.c src/utils/gpmf-parser/demo/GPMF_print.c)
 target_link_libraries(play ${catkin_LIBRARIES} Eigen3::Eigen)
 
 target_link_libraries(play "-lm")
@@ -29,6 +29,9 @@ target_link_libraries(play "-lavcodec")
 target_link_libraries(play "-lavutil")
 target_link_libraries(play "-lavformat")
 target_link_libraries(play "-lswscale")
+
+add_executable(gpmf src/utils/gpmf-parser/demo/GPMF_demo.c src/utils/gpmf-parser/GPMF_parser.c src/utils/gpmf-parser/demo/GPMF_mp4reader.c src/utils/gpmf-parser/demo/GPMF_print.c)
+
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed

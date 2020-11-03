@@ -2,7 +2,7 @@
 <launch>
 
     <!-- <arg name="path" default="/home/ros/workspace/data/calib_camera_imu/calib2/GOPR9960.MP4" doc="path to the video file"/> -->
-    <arg name="path" default="/home/ros/workspace/data/calib_camera_imu/calib3/GOPR9961.MP4" doc="path to the video file"/>
+    <arg name="path" default="/home/ros/workspace/data/calib_camera_imu/calib3/GOPR9964.MP4" doc="path to the video file"/>
     <!-- <arg name="path" default="/home/ros/workspace/data/imu/GP019954.MP4" doc="path to the video file"/> -->
     <!-- <arg name="path" default="/home/ros/workspace/data/videos/GP032489.MP4" doc="path to the video file"/> -->
     <!-- <arg name="path" default="/home/ros/workspace/samples/imu/GP019954.MP4" doc="path to the video file"/> -->
